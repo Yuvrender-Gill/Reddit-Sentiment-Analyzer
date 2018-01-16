@@ -2,6 +2,7 @@ import sys
 import argparse
 import os
 import json
+from html.parser import HTMLParser
 
 indir = '/u/cs401/A1/data/';
 
@@ -15,10 +16,13 @@ def preproc1( comment , steps=range(1,11)):
     Returns:
         modComm : string, the modified comment 
     '''
-
+    bool_check = False 
+    # The modified comment after removing the noise from the comment. 
+    # Noise is specifically mentioned in the below mentioned steps. 
     modComm = ''
-    if 1 in steps:
-        print('TODO')
+    if '\n' in comment:
+        modComm = remove_newline(comment)
+        bool_check = True
     if 2 in steps:
         print('TODO')
     if 3 in steps:
@@ -37,8 +41,45 @@ def preproc1( comment , steps=range(1,11)):
         print('TODO')
     if 10 in steps:
         print('TODO')
+    
         
-    return modComm
+    return modComm if bool_check else comment
+
+
+## Helper Functions for specific tasks
+
+#1 To remove the newline characters from the comment.
+
+def remove_newline(comment):
+    ''' Returns a string with all newline characters removed from it.
+    
+    @param String comment: a String to remove newline character from.
+    @rtype: String
+    >>> comment = "\nHel\nlo how\n \n are you?\n"
+    >>> remove_newline(comment)
+    >>> 'Hello how are you?'
+    
+    '''
+    
+    #Remove the newline character
+    modified_comment = comment.replace("\n", "")
+    
+    return modified_comment
+
+#2 Convert the HTML Character to their ascii values. 
+
+def convert_HTML_char(comment):
+    ''' Returns a string with all HTML characters replaced with their corresponding 
+    ascii values.
+    
+    @param String comment: a String to replace HTML characters from
+    @rtype: String
+    >>> comment = "\nHel\nlo how\n \n are you?\n"
+    >>> convert_HTML_char(comment)
+    >>> 'Hello how are you?'
+    
+    '''
+    pass 
 
 def main( args ):
 
@@ -49,7 +90,10 @@ def main( args ):
             print("Processing " + fullFile)
 
             data = json.load(open(fullFile))
-            allOutput.append(data)
+            for key in data:
+                allOutput.append({key:data[key]})
+           
+            
 
             # TODO: select appropriate args.max lines
             # TODO: read those lines with something like `j = json.loads(line)`
@@ -62,6 +106,11 @@ def main( args ):
     fout = open(args.output, 'w')
     fout.write(json.dumps(allOutput))
     fout.close()
+    
+    
+    
+    
+    
 
 if __name__ == "__main__":
 
