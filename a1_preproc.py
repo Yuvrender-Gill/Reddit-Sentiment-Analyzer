@@ -46,9 +46,10 @@ def main( args ):
     for subdir, dirs, files in os.walk(indir):
         for file in files:
             fullFile = os.path.join(subdir, file)
-            print "Processing " + fullFile
+            print("Processing " + fullFile)
 
             data = json.load(open(fullFile))
+            allOutput.append(data)
 
             # TODO: select appropriate args.max lines
             # TODO: read those lines with something like `j = json.loads(line)`
@@ -72,7 +73,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if (args.max > 200272):
-        print "Error: If you want to read more than 200,272 comments per file, you have to read them all."
+        print("Error: If you want to read more than 200,272 comments per file, you have to read them all.")
         sys.exit(1)
         
     main(args)
