@@ -2,7 +2,9 @@ import sys
 import argparse
 import os
 import json
-from html.parser import HTMLParser
+import HTMLParser
+
+
 
 indir = '/u/cs401/A1/data/';
 
@@ -88,10 +90,15 @@ def main( args ):
         for file in files:
             fullFile = os.path.join(subdir, file)
             print("Processing " + fullFile)
-
+	    sum = 0 	
+            
             data = json.load(open(fullFile))
-            for key in data:
-                allOutput.append({key:data[key]})
+	    print(type(data))
+            for i in range(10000,20000):
+                allOutput.append(data[i])
+                sum += 1
+	    print(sum)
+	
            
             
 
