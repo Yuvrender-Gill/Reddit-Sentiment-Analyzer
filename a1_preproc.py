@@ -22,7 +22,7 @@ def preproc1( comment , steps=range(1,11)):
     # The modified comment after removing the noise from the comment. 
     # Noise is specifically mentioned in the below mentioned steps. 
     modComm = ''
-    modComm = remove_newline(comment)
+    modComm = remove_json_special(comment)
     
    # if 2 in steps:
        # print('TODO')
@@ -51,7 +51,7 @@ def preproc1( comment , steps=range(1,11)):
 
 #1 To remove the newline characters from the comment.
 
-def remove_newline(comment):
+def remove_json_special(comment):
     ''' Returns a string with all newline characters removed from it.
     
     @param String comment: a String to remove newline character from.
@@ -65,8 +65,10 @@ def remove_newline(comment):
     #Remove the newline character
     modified_comment = comment.replace("\n", "")
     modified_comment = modified_comment.replace("\\n", "")
-    modifeid_comment = modified_comment.replace("\\n\\n", "")
-    
+    modified_comment = modified_comment.replace("\\b", "")
+    modified_comment = modified_comment.replace("\\t", "")
+    modified_comment = modified_comment.replace("\\r", "")
+        
     return modified_comment
 
 #2 Convert the HTML Character to their ascii values. 
