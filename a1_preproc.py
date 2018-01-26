@@ -2,7 +2,7 @@ import sys
 import argparse
 import os
 import json
-import HTMLParser
+#import HTMLParser
 
 
 
@@ -24,7 +24,7 @@ def preproc1( comment , steps=range(1,11)):
     modComm = ''
     if '\n' in comment:
         modComm = remove_newline(comment)
-        bool_check = True
+    
     if 2 in steps:
         print('TODO')
     if 3 in steps:
@@ -45,7 +45,7 @@ def preproc1( comment , steps=range(1,11)):
         print('TODO')
     
         
-    return modComm if bool_check else comment
+    return modComm 
 
 
 ## Helper Functions for specific tasks
@@ -90,16 +90,12 @@ def main( args ):
         for file in files:
             fullFile = os.path.join(subdir, file)
             print("Processing " + fullFile)
-	    sum = 0 	
+	
             
             data = json.load(open(fullFile))
-	    print(type(data))
+            print(type(data))
             for i in range(10000,20000):
-                allOutput.append(data[i])
-                sum += 1
-	    print(sum)
-	
-           
+                allOutput.append(preproc1(data[i]))          
             
 
             # TODO: select appropriate args.max lines
