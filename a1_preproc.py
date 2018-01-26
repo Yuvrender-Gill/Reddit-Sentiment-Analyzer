@@ -22,27 +22,26 @@ def preproc1( comment , steps=range(1,11)):
     # The modified comment after removing the noise from the comment. 
     # Noise is specifically mentioned in the below mentioned steps. 
     modComm = ''
-    if '\n' in comment:
-        modComm = remove_newline(comment)
+    modComm = remove_newline(comment)
     
-    if 2 in steps:
-        print('TODO')
-    if 3 in steps:
-        print('TODO')
-    if 4 in steps:
-        print('TODO')
-    if 5 in steps:
-        print('TODO')
-    if 6 in steps:
-        print('TODO')
-    if 7 in steps:
-        print('TODO')
-    if 8 in steps:
-        print('TODO')
-    if 9 in steps:
-        print('TODO')
-    if 10 in steps:
-        print('TODO')
+   # if 2 in steps:
+       # print('TODO')
+   # if 3 in steps:
+       # print('TODO')
+   # if 4 in steps:
+       # print('TODO')
+   # if 5 in steps:
+       # print('TODO')
+   # if 6 in steps:
+      #  print('TODO')
+   # if 7 in steps:
+     #   print('TODO')
+   # if 8 in steps:
+    #    print('TODO')
+   # if 9 in steps:
+   #     print('TODO')
+   # if 10 in steps:
+  #      print('TODO')
     
         
     return modComm 
@@ -65,6 +64,8 @@ def remove_newline(comment):
     
     #Remove the newline character
     modified_comment = comment.replace("\n", "")
+    modified_comment = modified_comment.replace("\\n", "")
+    modifeid_comment = modified_comment.replace("\\n\\n", "")
     
     return modified_comment
 
@@ -84,7 +85,7 @@ def convert_HTML_char(comment):
     pass 
 
 def main( args ):
-
+    count = 0;
     allOutput = []
     for subdir, dirs, files in os.walk(indir):
         for file in files:
@@ -95,7 +96,8 @@ def main( args ):
             data = json.load(open(fullFile))
             print(type(data))
             for i in range(10000,20000):
-                allOutput.append(preproc1(data[i]))          
+                allOutput.append(preproc1(data[i]))
+                count += 1          
             
 
             # TODO: select appropriate args.max lines
@@ -105,7 +107,7 @@ def main( args ):
             # TODO: process the body field (j['body']) with preproc1(...) using default for `steps` argument
             # TODO: replace the 'body' field with the processed text
             # TODO: append the result to 'allOutput'
-            
+    print(count)       
     fout = open(args.output, 'w')
     fout.write(json.dumps(allOutput))
     fout.close()
