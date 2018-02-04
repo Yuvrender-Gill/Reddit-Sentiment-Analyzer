@@ -115,13 +115,17 @@ def remove_urls(comment):
     tokens 'http' and 'www'. 
     @param String comment: a String to replace URLS from 
     @rtype: String
+  
+    
     '''
-    modified_comment = ' '.join(filter(lambda x : not x.lower().startswith(('www', 'http')), comment.split(' ')))
-    lst = comment.split()
-    for item in lst:
-        if (item.startswith('http') or item.startswith('www') or 
-            item.startswith('(http') or item.startswith('(www')):
-                modified_comment = modified_comment.replace(item, "")
+    modified_comment = re.sub(r'^https?:\/\/.*[\r\n]*', '', comment, flags=re.MULTILINE)
+    modified_comment = re.sub(r'^www?:\/\/.*[\r\n]*', '', modified_comment, flags=re.MULTILINE)
+   # modified_comment = ' '.join(filter(lambda x : not x.lower().startswith(('www', 'http')), comment.split(' ')))
+   #3 lst = comment.split()
+   # for item in lst:
+      #  if (item.startswith('http') or item.startswith('www') or 
+       #     item.startswith('(http') or item.startswith('(www')):
+        #        modified_comment = modified_comment.replace(item, "")
     return modified_comment
 
 def main( args ):
