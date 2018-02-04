@@ -36,7 +36,7 @@ def preproc1( comment , steps=range(1,11)):
     modComm = ''
     modComm = remove_json_special(comment)
     modComm = convert_HTML_char(modComm)
-    
+    modComm = remove_urls(modComm)
    # if 2 in steps:
        # print('TODO')
    # if 3 in steps:
@@ -120,7 +120,7 @@ def remove_urls(comment):
     lst = comment.split()
     for item in lst:
         if (item.startswith('http') or item.startswith('www') or 
-            item.startswith('(http') or item.startswith('(www'))):
+            item.startswith('(http') or item.startswith('(www')):
                 modified_comment = modified_comment.replace(item, "")
     return modified_comment
 
