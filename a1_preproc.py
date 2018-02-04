@@ -4,7 +4,7 @@ import os
 import json
 import re
 import HTMLParser
-import NLPlib as nlp
+#import NLPlib as nlp
 
 import csv
 import itertools
