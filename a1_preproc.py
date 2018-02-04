@@ -119,13 +119,12 @@ def remove_urls(comment):
     
     '''
     modified_comment = re.sub(r"http\S+", "", comment)
+    #one special case
+    modified_comment = re.sub(r"Http\S+", "", modified_comment)
     modified_comment = re.sub(r"www\S+", "", modified_comment)
-   # modified_comment = ' '.join(filter(lambda x : not x.lower().startswith(('www', 'http')), comment.split(' ')))
-   #3 lst = comment.split()
-   # for item in lst:
-      #  if (item.startswith('http') or item.startswith('www') or 
-       #     item.startswith('(http') or item.startswith('(www')):
-        #        modified_comment = modified_comment.replace(item, "")
+    # One special case
+    modified_comment = re.sub(r"Www\S+", "", modified_comment)
+   
     return modified_comment
 
 def main( args ):
