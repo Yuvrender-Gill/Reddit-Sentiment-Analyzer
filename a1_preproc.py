@@ -2,7 +2,19 @@ import sys
 import argparse
 import os
 import json
-#import HTMLParser
+import re
+import HTMLParser
+import NLPlib as nlp
+
+import csv
+import itertools
+
+import re
+import HTMLParser
+
+import StringIO
+import string
+
 
 
 
@@ -23,6 +35,7 @@ def preproc1( comment , steps=range(1,11)):
     # Noise is specifically mentioned in the below mentioned steps. 
     modComm = ''
     modComm = remove_json_special(comment)
+    modComm = convert_HTML_char(modComm)
     
    # if 2 in steps:
        # print('TODO')
@@ -84,7 +97,15 @@ def convert_HTML_char(comment):
     >>> 'Hello how are you?'
     
     '''
-    pass 
+    # Removes all the HTML tags from the comment.
+    modified_comment = re.sub('<[^>]+>', '', comment)
+    #Create a parser object
+    parser = HTMLParser.HTMLParser()
+    #Get all the printable strings from the comment
+    modified_comment = filter(lambda x: x in string.printable, modified_comment)
+    modified_comment = parser.unescape(modified_comment).encode('ascii', 'ignore')
+    
+    return modified_comment
 
 def main( args ):
     count = 0;
