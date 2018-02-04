@@ -116,7 +116,7 @@ def remove_urls(comment):
     @param String comment: a String to replace URLS from 
     @rtype: String
     '''
-    modified_comment = comment
+    modified_comment = ' '.join(filter(lambda x : not x.lower().startswith(('www', 'http')), comment.split(' ')))
     lst = comment.split()
     for item in lst:
         if (item.startswith('http') or item.startswith('www') or 
