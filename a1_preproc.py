@@ -107,6 +107,23 @@ def convert_HTML_char(comment):
     
     return modified_comment
 
+#3 Remove the urls from the data 
+
+def remove_urls(comment):
+    '''
+    Removes any urls that appear in a comment. URLS typpically start with 
+    tokens 'http' and 'www'. 
+    @param String comment: a String to replace URLS from 
+    @rtype: String
+    '''
+    modified_comment = comment
+    lst = comment.split()
+    for item in lst:
+        if (item.startswith('http') or item.startswith('www') or 
+            item.startswith('(http') or item.startswith('(www'))):
+                modified_comment = modified_comment.replace(item, "")
+    return modified_comment
+
 def main( args ):
     count = 0;
     allOutput = []
