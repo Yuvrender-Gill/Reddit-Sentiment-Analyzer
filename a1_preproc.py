@@ -5,12 +5,12 @@ import json
 import re
 
 
-import csv
-import itertools
+#import csv
+#import itertools
 
-import HTMLParser
+#import HTMLParser
 
-import StringIO
+#import StringIO
 import string
 
 
@@ -36,6 +36,7 @@ def preproc1( comment , steps=range(1,11)):
     modComm = convert_HTML_char(modComm)
     modComm = remove_urls(modComm)
     modComm = pun_tokenizer(modComm)
+    modComm = split_clitics(modComm)
 	# if 2 in steps:
        # print('TODO')
    # if 3 in steps:
@@ -134,23 +135,33 @@ def pun_tokenizer(comment):
     @param String comment: a String to tokenize punctuation from
     @rtype: String
     '''
-    #file = open('/u/cs401/Wordlists/pn_abbrev.english', 'r')
-    #file2 = open('/u/cs401/Wordlists/pn_abbrev.english2', 'r')
+    
     abbr_list = ['Capt', 'Col.', 'Dr.','Drs.', 'Fig.', 'Figs.', 'Gen.', 'Gov.', 'HON.', 'Mr.', 'MRS.', 'Miss.', 'Messrs.', 'Miss.', 'MR.', 'Mrs.', 'Ref.', 'Rep.', 'Reps.', 'Sen.', 'fig.', 'figs.', 'vs.', 'Lt.', 'e.g.', 'i.e.'] 
     lst_str = comment.split()
     modified_comment = ""
     
     for item in lst_str:
         if (not (item in abbr_list)):
-            modified_comment += ' '.join([re.sub(r"((["+ string.punctuation + "])\\2*)", r" \1  ", item)]) + ' '
-            
-            
-           # print(item)
+            modified_comment += ' '.join([re.sub(r"((["+ '!"#$%&\()*+,-./:;<=>?@[\\]^_`{|}~' + "])\\2*)", r" \1  ", item)]) + ' '
         else:
             modified_comment += ' ' + item + ' ' 
     modified_comment = ' '.join(modified_comment.split('  '))
     modified_comment = re.sub(r"(') ([A-Za-z] )", r"\1\2", modified_comment)
     return modified_comment
+
+#5 Spliting Clitics using white space
+
+def split_clitics(comment):
+    '''
+    Returns a string with clitics split from the comment.
+    @param String comment: a String to split clitics from
+    @rtype: String
+    '''
+    modified_comment = ' '.join([re.sub(r"((["+ "'" + "]))", r" \1", comment)])
+    modified_comment = ' '.join(modified_comment.split('  '))
+    modified_comment = re.sub(r"(') ([A-Za-z] )", r"\1\2", modified_comment)
+    return modified_comment
+
 
 def main( args ):
     count = 0;
