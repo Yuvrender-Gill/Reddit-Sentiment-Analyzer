@@ -3,15 +3,15 @@ import argparse
 import os
 import json
 import re
-#import HTMLParser
+import HTMLParser
 #import NLPlib as nlp
 
-#import csv
-#import itertools
+import csv
+import itertools
 
-#import HTMLParser
+import HTMLParser
 
-#import StringIO
+import StringIO
 import string
 
 
@@ -36,7 +36,8 @@ def preproc1( comment , steps=range(1,11)):
     modComm = remove_json_special(comment)
     modComm = convert_HTML_char(modComm)
     modComm = remove_urls(modComm)
-   # if 2 in steps:
+    modComm = pun_tokenizer(modComm)
+	# if 2 in steps:
        # print('TODO')
    # if 3 in steps:
        # print('TODO')
@@ -134,9 +135,9 @@ def pun_tokenizer(comment):
     @param String comment: a String to tokenize punctuation from
     @rtype: String
     '''
-    file = open('/u/cs401/Wordlists/pn_abbrev.english', 'r')
-    file2 = open('/u/cs401/Wordlists/pn_abbrev.english2', 'r')
-    abbr_list = file.readlines().extend(file2.readlines())
+    #file = open('/u/cs401/Wordlists/pn_abbrev.english', 'r')
+    #file2 = open('/u/cs401/Wordlists/pn_abbrev.english2', 'r')
+    abbr_list = ['Capt', 'Col.', 'Dr.','Drs.', 'Fig.', 'Figs.', 'Gen.', 'Gov.', 'HON.', 'Mr.', 'MRS.', 'Miss.', 'Messrs.', 'Miss.', 'MR.', 'Mrs.', 'Ref.', 'Rep.', 'Reps.', 'Sen.', 'fig.', 'figs.', 'vs.', 'Lt.', 'e.g.', 'i.e.'] 
     lst_str = comment.split()
     modified_comment = ""
     
@@ -144,7 +145,7 @@ def pun_tokenizer(comment):
         if (not (item in abbr_list)):
             modified_comment += ' '.join([re.sub(r"((["+ string.punctuation + "])\\2*)", r" \1  ", item)])
             modified_comment = re.sub(r"(') ([A-Za-z] )", r"\1\2", modified_comment)
-            print(item)
+           # print(item)
         else:
             modified_comment += ' ' + item
     return modified_comment
