@@ -194,35 +194,35 @@ def main( args ):
         if ('id' in line):
             make_json(line['id'], line2['id'])
         else:
-            line['id'] = 'null'
+            line2['id'] = 'null'
         if ('body' in line):
             make_json(line['body'], preproc1(line2['body']))
         else:
-            line['body'] = 'null'
+            line2['body'] = 'null'
         if ('ups' in line):
             make_json(line['ups'], line2['ups'])
         else:
-            line['ups'] = 'null'
+            line2['ups'] = 'null'
         if ('downs' in line):
             make_json(line['downs'], line2['downs'])
         else:
-            line['downs'] = 'null'
+            line2['downs'] = 'null'
         if ('score' in line):
             make_json(line['score'], line2['score'])
         else:
-            line['score'] = 'null'
+            line2['score'] = 'null'
         if ('controversiality' in line):
             make_json(line['controversiality'], line2['controversiality'])
         else:
-            line['controversiality'] = 'null'
+            line2['controversiality'] = 'null'
         if ('author' in line):
             make_json(line['author'], line2['author'])
         else:
-            line['author'] = 'null'
+            line2['author'] = 'null'
         if ('subreddit' in line):
             make_json(line['subreddit'], line2['subreddit'])
         else:
-            line['subreddit'] = 'null'
+            line2['subreddit'] = 'null'
         line2['cat'] = file
         json_data = json.dumps(data)  
         allOutput.append(json_data)
