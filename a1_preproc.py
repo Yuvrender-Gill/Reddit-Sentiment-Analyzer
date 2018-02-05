@@ -3,8 +3,7 @@ import argparse
 import os
 import json
 import re
-import HTMLParser
-#import NLPlib as nlp
+
 
 import csv
 import itertools
@@ -143,11 +142,14 @@ def pun_tokenizer(comment):
     
     for item in lst_str:
         if (not (item in abbr_list)):
-            modified_comment += ' '.join([re.sub(r"((["+ string.punctuation + "])\\2*)", r" \1  ", item)])
-            modified_comment = re.sub(r"(') ([A-Za-z] )", r"\1\2", modified_comment)
+            modified_comment += ' '.join([re.sub(r"((["+ string.punctuation + "])\\2*)", r" \1  ", item)]) + ' '
+            print(modified_comment)
+            
            # print(item)
         else:
-            modified_comment += ' ' + item
+            modified_comment += ' ' + item + ' ' 
+    modified_comment = ' '.join(modified_comment.split('  '))
+    modified_comment = re.sub(r"(') ([A-Za-z] )", r"\1\2", modified_comment)
     return modified_comment
 
 def main( args ):
