@@ -75,7 +75,8 @@ def remove_json_special(comment):
     
     '''
     
-    #Remove the newline character
+    #Remove the newline character, carnage return and tab character
+    #remove the corner cases specific to the data
     modified_comment = comment.replace("\n", "")
     modified_comment = modified_comment.replace("\\n", "")
     modified_comment = modified_comment.replace("\\b", "")
@@ -136,7 +137,10 @@ def pun_tokenizer(comment):
     @rtype: String
     '''
     
-    abbr_list = ['Capt', 'Col.', 'Dr.','Drs.', 'Fig.', 'Figs.', 'Gen.', 'Gov.', 'HON.', 'Mr.', 'MRS.', 'Miss.', 'Messrs.', 'Miss.', 'MR.', 'Mrs.', 'Ref.', 'Rep.', 'Reps.', 'Sen.', 'fig.', 'figs.', 'vs.', 'Lt.', 'e.g.', 'i.e.'] 
+    abbr_list = ['Capt', 'Col.', 'Dr.','Drs.', 'Fig.', 'Figs.', 'Gen.',
+                 'Gov.', 'HON.', 'Mr.', 'MRS.', 'Miss.', 'Messrs.', 'Miss.',
+                 'MR.', 'Mrs.', 'Ref.', 'Rep.', 'Reps.', 'Sen.', 'fig.',
+                 'figs.', 'vs.', 'Lt.', 'e.g.', 'i.e.'] 
     lst_str = comment.split()
     modified_comment = ""
     
@@ -162,6 +166,8 @@ def split_clitics(comment):
     modified_comment = re.sub(r"(') ([A-Za-z] )", r"\1\2", modified_comment)
     return modified_comment
 
+#6 
+
 
 def main( args ):
     count = 0;
@@ -174,7 +180,7 @@ def main( args ):
             
             data = json.load(open(fullFile))
             print(type(data))
-            for i in range(10000,20000):
+            for i in range(0,1):
                 allOutput.append(preproc1(data[i]))
                 count += 1          
             
