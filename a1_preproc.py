@@ -5,12 +5,12 @@ import json
 import re
 
 
-#import csv
-#import itertools
+import csv
+import itertools
 
-#import HTMLParser
+import HTMLParser
 
-#import StringIO
+import StringIO
 import string
 
 
