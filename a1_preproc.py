@@ -182,8 +182,22 @@ def main( args ):
             print(type(data))
             for i in range(0,1):
                 line = json.loads(data[i])
-                print(line)
-                allOutput.append(preproc1(data[i]))
+                line2 = {}
+		if(line['id']):
+                    line2['id'] = line['id']
+		else:
+		    line2['id'] = 'null'
+                line2['body'] = preproc1(line['body'])
+                line2['ups'] = line['ups']
+		line2['downs'] = line['downs']
+		line2['controversiality'] = line['controversiality']
+		line2['score'] = line['score']
+		line2['author'] = line['author']
+		line2['subreddit'] = line['subreddit']
+		line2['cat'] = file
+                json_data = json.dumps(data)  
+                print(preproc1(line['body']))
+                allOutput.append(json_data)
                 
                 count += 1          
             
