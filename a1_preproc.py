@@ -37,7 +37,7 @@ def preproc1( comment , steps=range(1,11)):
     modComm = remove_urls(modComm)
     modComm = pun_tokenizer(modComm)
     modComm = split_clitics(modComm)
-	# if 2 in steps:
+    # if 2 in steps:
        # print('TODO')
    # if 3 in steps:
        # print('TODO')
@@ -184,49 +184,49 @@ def main( args ):
         for file in files:
             fullFile = os.path.join(subdir, file)
             print("Processing " + fullFile)
-	
+    
             
-    data = json.load(open(fullFile))
+            data = json.load(open(fullFile))
             
-    for i in range(0,1):
-        line = json.loads(data[i])
-        line2 = {}
-        if ('id' in line):
-            make_json(line['id'], line2['id'])
-        else:
-            line2['id'] = 'null'
-        if ('body' in line):
-            make_json(line['body'], preproc1(line2['body']))
-        else:
-            line2['body'] = 'null'
-        if ('ups' in line):
-            make_json(line['ups'], line2['ups'])
-        else:
-            line2['ups'] = 'null'
-        if ('downs' in line):
-            make_json(line['downs'], line2['downs'])
-        else:
-            line2['downs'] = 'null'
-        if ('score' in line):
-            make_json(line['score'], line2['score'])
-        else:
-            line2['score'] = 'null'
-        if ('controversiality' in line):
-            make_json(line['controversiality'], line2['controversiality'])
-        else:
-            line2['controversiality'] = 'null'
-        if ('author' in line):
-            make_json(line['author'], line2['author'])
-        else:
-            line2['author'] = 'null'
-        if ('subreddit' in line):
-            make_json(line['subreddit'], line2['subreddit'])
-        else:
-            line2['subreddit'] = 'null'
-        line2['cat'] = file
-        json_data = json.dumps(data)  
-        allOutput.append(json_data)
-        count += 1          
+            for i in range(0,1):
+                line = json.loads(data[i])
+                line2 = {}
+                if ('id' in line):
+                    make_json(line['id'], line2['id'])
+                else:
+                    line2['id'] = 'null'
+                if ('body' in line):
+                    make_json(line['body'], preproc1(line2['body']))
+                else:
+                    line2['body'] = 'null'
+                if ('ups' in line):
+                    make_json(line['ups'], line2['ups'])
+                else:
+                    line2['ups'] = 'null'
+                if ('downs' in line):
+                    make_json(line['downs'], line2['downs'])
+                else:
+                    line2['downs'] = 'null'
+                if ('score' in line):
+                    make_json(line['score'], line2['score'])
+                else:
+                    line2['score'] = 'null'
+                if ('controversiality' in line):
+                    make_json(line['controversiality'], line2['controversiality'])
+                else:
+                    line2['controversiality'] = 'null'
+                if ('author' in line):
+                    make_json(line['author'], line2['author'])
+                else:
+                    line2['author'] = 'null'
+                if ('subreddit' in line):
+                    make_json(line['subreddit'], line2['subreddit'])
+                else:
+                    line2['subreddit'] = 'null'
+                line2['cat'] = file
+                json_data = json.dumps(data)  
+                allOutput.append(json_data)
+                count += 1          
             
 
             # TODO: select appropriate args.max lines
