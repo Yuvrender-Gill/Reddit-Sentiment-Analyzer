@@ -191,39 +191,39 @@ def main( args ):
     for i in range(0,1):
         line = json.loads(data[i])
         line2 = {}
-        if (line['id']):
+        if ('id' in line):
             make_json(line['id'], line2['id'])
         else:
             line['id'] = 'null'
-        if (line['body']):
+        if ('body' in line):
             make_json(line['body'], preproc1(line2['body']))
         else:
             line['body'] = 'null'
-        if (line['ups']):
+        if ('ups' in line):
             make_json(line['ups'], line2['ups'])
         else:
             line['ups'] = 'null'
-        if (line['downs']):
+        if ('downs' in line):
             make_json(line['downs'], line2['downs'])
         else:
             line['downs'] = 'null'
-        if (line['score']):
+        if ('score' in line):
             make_json(line['score'], line2['score'])
         else:
             line['score'] = 'null'
-        if (line['controversiality']):
+        if ('controversiality' in line):
             make_json(line['controversiality'], line2['controversiality'])
         else:
             line['controversiality'] = 'null'
-        if (line['author']):
+        if ('author' in line):
             make_json(line['author'], line2['author'])
         else:
             line['author'] = 'null'
-        if (line['subreddit']):
+        if ('subreddit' in line):
             make_json(line['subreddit'], line2['subreddit'])
         else:
             line['subreddit'] = 'null'
-	line2['cat'] = file
+        line2['cat'] = file
         json_data = json.dumps(data)  
         allOutput.append(json_data)
         count += 1          
