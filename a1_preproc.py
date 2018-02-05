@@ -143,7 +143,7 @@ def pun_tokenizer(comment):
     for item in lst_str:
         if (not (item in abbr_list)):
             modified_comment += ' '.join([re.sub(r"((["+ string.punctuation + "])\\2*)", r" \1  ", item)]) + ' '
-            print(modified_comment)
+            
             
            # print(item)
         else:
