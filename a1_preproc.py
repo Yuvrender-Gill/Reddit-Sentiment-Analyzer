@@ -223,7 +223,7 @@ def main( args ):
             make_json(line['subreddit'], line2['subreddit'])
         else:
             line['subreddit'] = 'null'
-		  line2['cat'] = file
+	line2['cat'] = file
         json_data = json.dumps(data)  
         allOutput.append(json_data)
         count += 1          
