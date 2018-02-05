@@ -3,16 +3,15 @@ import argparse
 import os
 import json
 import re
-import HTMLParser
+#import HTMLParser
 #import NLPlib as nlp
 
-import csv
-import itertools
+#import csv
+#import itertools
 
-import re
-import HTMLParser
+#import HTMLParser
 
-import StringIO
+#import StringIO
 import string
 
 
@@ -125,6 +124,29 @@ def remove_urls(comment):
     # One special case
     modified_comment = re.sub(r"Www\S+", "", modified_comment)
    
+    return modified_comment
+
+#4 Tokenize punctuation
+
+def pun_tokenizer(comment):
+    '''
+    Returns a string with all its punctuation tokenized.
+    @param String comment: a String to tokenize punctuation from
+    @rtype: String
+    '''
+    file = open('/u/cs401/Wordlists/pn_abbrev.english', 'r')
+    file2 = open('/u/cs401/Wordlists/pn_abbrev.english2', 'r')
+    abbr_list = file.readlines().extend(file2.readlines())
+    lst_str = comment.split()
+    modified_comment = ""
+    
+    for item in lst_str:
+        if (not (item in abbr_list)):
+            modified_comment += ' '.join([re.sub(r"((["+ string.punctuation + "])\\2*)", r" \1  ", item)])
+            modified_comment = re.sub(r"(') ([A-Za-z] )", r"\1\2", modified_comment)
+            print(item)
+        else:
+            modified_comment += ' ' + item
     return modified_comment
 
 def main( args ):
