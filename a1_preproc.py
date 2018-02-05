@@ -168,7 +168,15 @@ def split_clitics(comment):
 
 #6 
 
-
+## Helper to set the json fields
+def make_json(json1, json2):
+    '''
+    
+    '''
+    if (json1):
+        json2 = json1
+    else:
+        json2 = 'null'
 def main( args ):
     count = 0;
     allOutput = []
@@ -178,28 +186,23 @@ def main( args ):
             print("Processing " + fullFile)
 	
             
-            data = json.load(open(fullFile))
-            print(type(data))
-            for i in range(0,1):
-                line = json.loads(data[i])
-                line2 = {}
-		if(line['id']):
-                    line2['id'] = line['id']
-		else:
-		    line2['id'] = 'null'
-                line2['body'] = preproc1(line['body'])
-                line2['ups'] = line['ups']
-		line2['downs'] = line['downs']
-		line2['controversiality'] = line['controversiality']
-		line2['score'] = line['score']
-		line2['author'] = line['author']
-		line2['subreddit'] = line['subreddit']
-		line2['cat'] = file
-                json_data = json.dumps(data)  
-                print(preproc1(line['body']))
-                allOutput.append(json_data)
-                
-                count += 1          
+    data = json.load(open(fullFile))
+            
+    for i in range(0,1):
+        line = json.loads(data[i])
+        line2 = {}
+        make_json(line['id'], line2['id'])
+        make_json(line['body'], preproc1(line2['body']))
+        make_json(line['ups'], line2['ups'])
+        make_json(line['downs'], line2['downs'])
+        make_json(line['score'], line2['score'])
+        make_json(line['controversiality'], line2['controversiality'])
+        make_json(line['author'], line2['author'])
+        make_json(line['subreddit'], line2['subreddit'])
+		  line2['cat'] = file
+        json_data = json.dumps(data)  
+        allOutput.append(json_data)
+        count += 1          
             
 
             # TODO: select appropriate args.max lines
