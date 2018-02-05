@@ -181,7 +181,10 @@ def main( args ):
             data = json.load(open(fullFile))
             print(type(data))
             for i in range(0,1):
+                line = json.loads(data[i])
+                print(line)
                 allOutput.append(preproc1(data[i]))
+                
                 count += 1          
             
 
