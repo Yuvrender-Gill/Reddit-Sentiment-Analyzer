@@ -6,7 +6,7 @@ import json
 import re
 from os.path import basename
 
-#import spacy
+import spacy
 #import csv
 #import itertools
 
@@ -29,7 +29,7 @@ def preproc1( comment , steps=range(1,11)):
     Returns:
         modComm : string, the modified comment 
     '''
-    bool_check = False 
+     
     # The modified comment after removing the noise from the comment. 
     # Noise is specifically mentioned in the below mentioned steps. 
     modComm = ''
