@@ -1,3 +1,4 @@
+
 import sys
 import argparse
 import os
@@ -5,7 +6,7 @@ import json
 import re
 from os.path import basename
 
-
+import spacy
 import csv
 import itertools
 
@@ -226,7 +227,7 @@ def main( args ):
                     line2['subreddit'] = line['subreddit']
                 else:
 		    if('subreddit_id' in line):
-			line2['subreddit'] = line['subreddit_id']
+		        line2['subreddit'] = line['subreddit_id']
 		    else:
                         line2['subreddit'] = 'null'
                 line2['cat'] = basename(fullFile)
