@@ -226,9 +226,9 @@ def main( args ):
                 if ('subreddit' in line):
                     line2['subreddit'] = line['subreddit']
                 else:
-		    if('subreddit_id' in line):
-		        line2['subreddit'] = line['subreddit_id']
-		    else:
+		            if('subreddit_id' in line):
+		                line2['subreddit'] = line['subreddit_id']
+		            else:
                         line2['subreddit'] = 'null'
                 line2['cat'] = basename(fullFile)
                 json_data = json.dumps(line2)  
