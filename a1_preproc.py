@@ -6,13 +6,12 @@ import json
 import re
 from os.path import basename
 
-import spacy
-import csv
-import itertools
+#import spacy
+#import csv
+#import itertools
 
-import HTMLParser
-
-import StringIO
+from html.parser import HTMLParser
+import html 
 import string
 
 
@@ -103,10 +102,10 @@ def convert_HTML_char(comment):
     # Removes all the HTML tags from the comment.
     modified_comment = re.sub('<[^>]+>', '', comment)
     #Create a parser object
-    parser = HTMLParser.HTMLParser()
+    
     #Get all the printable strings from the comment
-    modified_comment = filter(lambda x: x in string.printable, modified_comment)
-    modified_comment = parser.unescape(modified_comment).encode('ascii', 'ignore')
+    
+    modified_comment = html.unescape(modified_comment).encode('ascii', 'ignore')
     
     return modified_comment
 
@@ -121,12 +120,12 @@ def remove_urls(comment):
   
     
     '''
-    modified_comment = re.sub(r"http\S+", "", comment)
+    modified_comment = re.sub("http\S+", "", comment)
     #one special case
-    modified_comment = re.sub(r"Http\S+", "", modified_comment)
-    modified_comment = re.sub(r"www\S+", "", modified_comment)
+    modified_comment = re.sub("Http\S+", "", modified_comment)
+    modified_comment = re.sub("www\S+", "", modified_comment)
     # One special case
-    modified_comment = re.sub(r"Www\S+", "", modified_comment)
+    modified_comment = re.sub("Www\S+", "", modified_comment)
    
     return modified_comment
 
@@ -148,11 +147,11 @@ def pun_tokenizer(comment):
     
     for item in lst_str:
         if (not (item in abbr_list)):
-            modified_comment += ' '.join([re.sub(r"((["+ '!"#$%&\()*+,-./:;<=>?@[\\]^_`{|}~' + "])\\2*)", r" \1  ", item)]) + ' '
+            modified_comment += ' '.join([re.sub("((["+ '!"#$%&\()*+,-./:;<=>?@[\\]^_`{|}~' + "])\\2*)", r" \1  ", item)]) + ' '
         else:
             modified_comment += ' ' + item + ' ' 
     modified_comment = ' '.join(modified_comment.split('  '))
-    modified_comment = re.sub(r"(') ([A-Za-z] )", r"\1\2", modified_comment)
+    modified_comment = re.sub("(') ([A-Za-z] )", r"\1\2", modified_comment).strip()
     return modified_comment
 
 #5 Spliting Clitics using white space
@@ -163,9 +162,9 @@ def split_clitics(comment):
     @param String comment: a String to split clitics from
     @rtype: String
     '''
-    modified_comment = ' '.join([re.sub(r"((["+ "'" + "]))", r" \1", comment)])
+    modified_comment = ' '.join([re.sub("((["+ "'" + "]))", r" \1", comment)])
     modified_comment = ' '.join(modified_comment.split('  '))
-    modified_comment = re.sub(r"(') ([A-Za-z] )", r"\1\2", modified_comment)
+    modified_comment = re.sub("(') ([A-Za-z] )", r"\1\2", modified_comment).strip()
     return modified_comment
 
 #6 
@@ -192,7 +191,7 @@ def main( args ):
             
             for i in range(10000,20000):
                 line = json.loads(data[i])
-		                  
+                          
                 line2 = {}
                 
                 if ('id' in line):
@@ -226,9 +225,9 @@ def main( args ):
                 if ('subreddit' in line):
                     line2['subreddit'] = line['subreddit']
                 else:
-		            if('subreddit_id' in line):
-		                line2['subreddit'] = line['subreddit_id']
-		            else:
+                    if ('subreddit_id' in line):
+                        line2['subreddit'] = line['subreddit_id']
+                    else:
                         line2['subreddit'] = 'null'
                 line2['cat'] = basename(fullFile)
                 json_data = json.dumps(line2)  
