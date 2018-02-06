@@ -18,6 +18,7 @@ import string
 
 
 indir = '/u/cs401/A1/data/';
+nlp = spacy.load('en', disable=['parser', 'ner'])
 
 def preproc1( comment , steps=range(1,11)):
     ''' This function pre-processes a single comment
@@ -176,10 +177,7 @@ def POS_tagging(comment):
     @param String comment: a String to split clitics from
     @rtype: String
     '''
-
     
-    
-    nlp = spacy.load('en', disable=['parser', 'ner'])
     utt = nlp(comment)
     return ' '.join([(token.lemma_+'/'+token.tag_) for token in utt]).strip() 
     
