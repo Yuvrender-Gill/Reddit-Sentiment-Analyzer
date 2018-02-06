@@ -34,7 +34,7 @@ def preproc1( comment , steps=range(1,11)):
     # Noise is specifically mentioned in the below mentioned steps. 
     modComm = ''
     modComm = remove_json_special(comment)
-    modComm = convert_HTML_char(modComm)
+    #modComm = convert_HTML_char(modComm)
     modComm = remove_urls(modComm)
     modComm = pun_tokenizer(modComm)
     modComm = split_clitics(modComm)
@@ -120,12 +120,12 @@ def remove_urls(comment):
   
     
     '''
-    modified_comment = re.sub("http\S+", "", str(comment)
+    modified_comment = re.sub(r"http\S+", "", str(comment))
     #one special case
-    modified_comment = re.sub("Http\S+", "", str(modified_comment))
-    modified_comment = re.sub("www\S+", "", str(modified_comment))
+    modified_comment = re.sub(r"Http\S+", "", str(modified_comment))
+    modified_comment = re.sub(r"www\S+", "", str(modified_comment))
     # One special case
-    modified_comment = re.sub("Www\S+", "", str(modified_comment))
+    modified_comment = re.sub(r"Www\S+", "", str(modified_comment))
    
     return modified_comment
 
@@ -147,11 +147,11 @@ def pun_tokenizer(comment):
     
     for item in lst_str:
         if (not (item in abbr_list)):
-            modified_comment += ' '.join([re.sub("((["+ '!"#$%&\()*+,-./:;<=>?@[\\]^_`{|}~' + "])\\2*)", r" \1  ", item)]) + ' '
+            modified_comment += ' '.join([re.sub(r"((["+ '!"#$%&\()*+,-./:;<=>?@[\\]^_`{|}~' + "])\\2*)", r" \1  ", item)]) + ' '
         else:
             modified_comment += ' ' + item + ' ' 
     modified_comment = ' '.join(modified_comment.split('  '))
-    modified_comment = re.sub("(') ([A-Za-z] )", r"\1\2", modified_comment).strip()
+    modified_comment = re.sub(r"(') ([A-Za-z] )", r"\1\2", modified_comment).strip()
     return modified_comment
 
 #5 Spliting Clitics using white space
@@ -162,9 +162,9 @@ def split_clitics(comment):
     @param String comment: a String to split clitics from
     @rtype: String
     '''
-    modified_comment = ' '.join([re.sub("((["+ "'" + "]))", r" \1", comment)])
+    modified_comment = ' '.join([re.sub(r"((["+ "'" + "]))", r" \1", comment)])
     modified_comment = ' '.join(modified_comment.split('  '))
-    modified_comment = re.sub("(') ([A-Za-z] )", r"\1\2", modified_comment).strip()
+    modified_comment = re.sub(r"(') ([A-Za-z] )", r"\1\2", modified_comment).strip()
     return modified_comment
 
 #6 
