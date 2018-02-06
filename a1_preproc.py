@@ -3,6 +3,7 @@ import argparse
 import os
 import json
 import re
+from os.path import basename
 
 
 import csv
@@ -188,43 +189,48 @@ def main( args ):
             
             data = json.load(open(fullFile))
             
-            for i in range(0,1):
+            for i in range(10000,20000):
                 line = json.loads(data[i])
+		                  
                 line2 = {}
+                
                 if ('id' in line):
-                    make_json(line['id'], line2['id'])
+                    line2['id']= line['id']
                 else:
                     line2['id'] = 'null'
-                if ('body' in line):
-                    make_json(line['body'], preproc1(line2['body']))
+                if ("body" in line):
+                    line2["body"] = preproc1(line["body"])
                 else:
-                    line2['body'] = 'null'
+                    line2["body"] = "null"
                 if ('ups' in line):
-                    make_json(line['ups'], line2['ups'])
+                    line2['ups'] =  line['ups']
                 else:
                     line2['ups'] = 'null'
                 if ('downs' in line):
-                    make_json(line['downs'], line2['downs'])
+                    line2['downs'] = line['downs']
                 else:
                     line2['downs'] = 'null'
                 if ('score' in line):
-                    make_json(line['score'], line2['score'])
+                    line2['score'] =line['score']
                 else:
                     line2['score'] = 'null'
                 if ('controversiality' in line):
-                    make_json(line['controversiality'], line2['controversiality'])
+                    line2['controversiality'] =line['controversiality']
                 else:
                     line2['controversiality'] = 'null'
                 if ('author' in line):
-                    make_json(line['author'], line2['author'])
+                    line2['author'] =line['author']
                 else:
                     line2['author'] = 'null'
                 if ('subreddit' in line):
-                    make_json(line['subreddit'], line2['subreddit'])
+                    line2['subreddit'] = line['subreddit']
                 else:
-                    line2['subreddit'] = 'null'
-                line2['cat'] = file
-                json_data = json.dumps(data)  
+		    if('subreddit_id' in line):
+			line2['subreddit'] = line['subreddit_id']
+		    else:
+                        line2['subreddit'] = 'null'
+                line2['cat'] = basename(fullFile)
+                json_data = json.dumps(line2)  
                 allOutput.append(json_data)
                 count += 1          
             
