@@ -1,4 +1,4 @@
-
+ 
 import sys
 import argparse
 import os
@@ -38,6 +38,7 @@ def preproc1( comment , steps=range(1,11)):
     modComm = remove_urls(modComm)
     modComm = pun_tokenizer(modComm)
     modComm = split_clitics(modComm)
+    modComm = POS_tagging(modComm)
     # if 2 in steps:
        # print('TODO')
    # if 3 in steps:
@@ -175,13 +176,12 @@ def POS_tagging(comment):
     @param String comment: a String to split clitics from
     @rtype: String
     '''
-    modified_comment = comment.unicode("utf-8")
+    modified_comment = ""
     nlp = spacy.load('en', disable=['parser', 'ner'])
     utt = nlp(modified_comment)
     for token in utt:
-        print(token.text, token.lemma_, token.tag_, token.is_stop)
-    
-    return comment
+    	modified_comment = token.lemma_ + '/' + token.tag_
+    return modified_comment
 ## Helper to set the json fields
 def make_json(json1, json2):
     '''
@@ -202,7 +202,7 @@ def main( args ):
             
             data = json.load(open(fullFile))
             
-            for i in range(10000,20000):
+            for i in range(10000,10001):
                 line = json.loads(data[i])
                           
                 line2 = {}
