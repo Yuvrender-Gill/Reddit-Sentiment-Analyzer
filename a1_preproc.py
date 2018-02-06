@@ -167,8 +167,21 @@ def split_clitics(comment):
     modified_comment = re.sub(r"(') ([A-Za-z] )", r"\1\2", modified_comment).strip()
     return modified_comment
 
-#6 
+#6 Part of speech tagging of tokens and lemmatization. 
 
+def POS_tagging(comment):
+    '''
+    Returns a string with clitics split from the comment.
+    @param String comment: a String to split clitics from
+    @rtype: String
+    '''
+    modified_comment = comment.unicode("utf-8")
+    nlp = spacy.load('en', disable=['parser', 'ner'])
+    utt = nlp(modified_comment)
+    for token in utt:
+        print(token.text, token.lemma_, token.tag_, token.is_stop)
+    
+    return comment
 ## Helper to set the json fields
 def make_json(json1, json2):
     '''
