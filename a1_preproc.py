@@ -120,12 +120,12 @@ def remove_urls(comment):
   
     
     '''
-    modified_comment = re.sub("http\S+", "", comment)
+    modified_comment = re.sub("http\S+", "", str(comment)
     #one special case
-    modified_comment = re.sub("Http\S+", "", modified_comment)
-    modified_comment = re.sub("www\S+", "", modified_comment)
+    modified_comment = re.sub("Http\S+", "", str(modified_comment))
+    modified_comment = re.sub("www\S+", "", str(modified_comment))
     # One special case
-    modified_comment = re.sub("Www\S+", "", modified_comment)
+    modified_comment = re.sub("Www\S+", "", str(modified_comment))
    
     return modified_comment
 
