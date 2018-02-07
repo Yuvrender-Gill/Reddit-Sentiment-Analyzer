@@ -15,10 +15,14 @@ import html
 import string
 
 
-
-
+#===========================================================
+'''GLOBAL VARIABLES'''#=====================================
 indir = '/u/cs401/A1/data/';
 nlp = spacy.load('en', disable=['parser', 'ner'])
+stop_words_file = open('/u/cs401/Wordlists/StopWords')
+stop_words_list = stop_words_file.readlines()
+#=================================================================
+#=================================================================
 
 def preproc1( comment , steps=range(1,11)):
     ''' This function pre-processes a single comment
@@ -40,6 +44,7 @@ def preproc1( comment , steps=range(1,11)):
     modComm = pun_tokenizer(modComm)
     modComm = split_clitics(modComm)
     modComm = POS_tagging(modComm)
+    modComm = remove_stop_words(modComm)
     # if 2 in steps:
        # print('TODO')
    # if 3 in steps:
@@ -173,13 +178,32 @@ def split_clitics(comment):
 
 def POS_tagging(comment):
     '''
-    Returns a string with clitics split from the comment.
-    @param String comment: a String to split clitics from
+    Returns with all the tokens (words) in it tagged with their part of speech.
+    The function uses spacy library's part of speech tagger. 
+    @param String comment: a String to tag the tokens from. 
     @rtype: String
     '''
-    
     utt = nlp(comment)
-    return ' '.join([(token.lemma_+'/'+token.tag_) for token in utt]).strip() 
+    return ' '.join([(token.text+'/'+token.tag_) for token in utt])
+
+#7 Remove the stop words.
+
+def remove_stop_words(comment):
+    '''
+    Returns a sub-string of comment with all the stop words removed from it.
+    @param String comment: a String to remove the stop words from. 
+    @rtype: String
+    '''
+    word_list = comment.split()
+    
+    for item in word_list:
+        #Check all the cases 1. lower 2. title 3.Upper 
+        if ((item.split('/')[0].title() in stop_words_list) or 
+            (item.split('/')[0].lower() in stop_words_list) or 
+            (item.split('/')[0] in stop_words_list) or
+            (item.split('/')[0].upper() in stop_words_list)):
+            word_list[word_list.index(item)] = ""
+    return ' '.join(word_list).strip()
     
 ## Helper to set the json fields
 def make_json(json1, json2):
