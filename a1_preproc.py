@@ -18,10 +18,14 @@ import string
 #===========================================================
 '''GLOBAL VARIABLES'''#=====================================
 indir = '/u/cs401/A1/data/';
+
 nlp = spacy.load('en', disable=['parser', 'ner'])
+
 stop_words_file = open('/u/cs401/Wordlists/StopWords')
 stop_words_list = stop_words_file.readlines()
-print(stop_words_list)
+
+#abbrivaition_file = open('u/cs401/Wordlists/abbrev')
+#abber_list = abbriviation_file.readlines()
 #=================================================================
 #=================================================================
 
