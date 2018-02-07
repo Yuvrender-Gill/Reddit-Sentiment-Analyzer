@@ -245,7 +245,7 @@ def main( args ):
             
             data = json.load(open(fullFile))
             
-            for i in range(10000,10100):
+            for i in range(10000,10200):
                 line = json.loads(data[i])
                           
                 line2 = {}
