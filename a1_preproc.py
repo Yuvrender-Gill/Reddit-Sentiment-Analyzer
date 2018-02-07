@@ -51,6 +51,7 @@ def preproc1( comment , steps=range(1,11)):
     modComm = POS_tagging(modComm)
     modComm = remove_stop_words(modComm)
     modComm = lemmatize(modComm)
+    modComm = split_sentence(modComm)
     modComm = lower(modComm)
     # if 2 in steps:
        # print('TODO')
@@ -237,10 +238,33 @@ def lemmatize(comment):
         #concatinate the body of post and return it 
     return ' '.join(word_list).strip()
 
+#9
+
+def split_sentence(comment):
+    '''
+    Adds a newline character at the end of every sentence in the comment 
+    string. The sentence ends with symbols '.', '?' and '!'. The input string
+    is supposed to be contain tokens in form of './.' for '.', '?/.' for '?' 
+    and '!/.' for '!'. Anything else is not the end of the sentence.
+    @param String comment: a String to split the sentences of 
+    @rtype: String
+    '''
+    word_list = comment.split()
     
+    for item in word_list:
+        if ((item.strip() ==  './.') or (item.strip() ==  '?/.') 
+        or (item.strip() ==  '!/.')):
+            word_list[word_list.index(item)] = item + ' \n'
+    return ' '.join(word_list).strip()
 #10 lower case
 
 def lower(comment):
+    ''' 
+    Returns a string such that the tokens of comment are lowered. The 
+    part of speech tag of the comment tokens are not lowered. 
+    @param String comment: a String to lower the tokens of.
+    @rtype: String
+    '''
     word_list = comment.split()
     for item in word_list:
         new_list = item.split('/')
