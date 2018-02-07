@@ -45,6 +45,7 @@ def preproc1( comment , steps=range(1,11)):
     modComm = split_clitics(modComm)
     modComm = POS_tagging(modComm)
     modComm = remove_stop_words(modComm)
+    modComm = lemmatize(modComm)
     # if 2 in steps:
        # print('TODO')
    # if 3 in steps:
@@ -190,7 +191,8 @@ def POS_tagging(comment):
 
 def remove_stop_words(comment):
     '''
-    Returns a sub-string of comment with all the stop words removed from it.
+    Returns a sub-string of comment with all the stop words removed from it and
+    white space removed from the ends if any due to removal of the stop words.
     @param String comment: a String to remove the stop words from. 
     @rtype: String
     '''
@@ -204,16 +206,27 @@ def remove_stop_words(comment):
             (item.split('/')[0].upper() in stop_words_list)):
             word_list[word_list.index(item)] = ""
     return ' '.join(word_list).strip()
+
+#8 Lemmatization of the tokens
+
+def lemmatize(comment):
     
-## Helper to set the json fields
-def make_json(json1, json2):
     '''
+    Returns a a string with all the tokens in the comment lemmatized.
+    @param String comment: a String to lemmatize the tokens from 
+    @rtype: String
+    '''
+    word_list = comment.split()
     
-    '''
-    if (json1):
-        json2 = json1
-    else:
-        json2 = 'null'
+    for item in word_list:
+        utt = nlp(item.split('/')[0])
+        lemmatized_token = ' '.join([(token.lemma_) for token in utt])
+        word_list[word_list.index(item)] = lemmatized_token + '/' + item[2]
+    return ' '.join(word_list).strip()
+
+    
+    
+    
 def main( args ):
     count = 0;
     allOutput = []
