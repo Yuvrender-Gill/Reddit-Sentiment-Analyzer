@@ -24,7 +24,7 @@ nlp = spacy.load('en', disable=['parser', 'ner'])
 stop_words_file = open('/u/cs401/Wordlists/StopWords')
 stop_words_list = stop_words_file.readlines()
 
-#abbrivaition_file = open('u/cs401/Wordlists/abbrev')
+#abbrivaition_file = open('u/cs401/Wordlists/abbrev.english', 'rb')
 #abber_list = abbriviation_file.readlines()
 #=================================================================
 #=================================================================
@@ -51,6 +51,7 @@ def preproc1( comment , steps=range(1,11)):
     modComm = POS_tagging(modComm)
     modComm = remove_stop_words(modComm)
     modComm = lemmatize(modComm)
+    modComm = lower(modComm)
     # if 2 in steps:
        # print('TODO')
    # if 3 in steps:
@@ -237,7 +238,16 @@ def lemmatize(comment):
     return ' '.join(word_list).strip()
 
     
-    
+#10 lower case
+
+def lower(comment):
+    word_list = comment.split()
+    for item in word_list:
+        new_list = item.split('/')
+        lower = new_list[0].lower()
+        new_list[0] = lower
+        word_list[word_list.index(item)] = ''.join(new_list)
+    return ' '.join(word_list).strip()    
     
 def main( args ):
     count = 0;
