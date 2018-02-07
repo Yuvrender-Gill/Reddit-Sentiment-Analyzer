@@ -21,6 +21,7 @@ indir = '/u/cs401/A1/data/';
 nlp = spacy.load('en', disable=['parser', 'ner'])
 stop_words_file = open('/u/cs401/Wordlists/StopWords')
 stop_words_list = stop_words_file.readlines()
+print(stop_words_list)
 #=================================================================
 #=================================================================
 
@@ -200,10 +201,10 @@ def remove_stop_words(comment):
     
     for item in word_list:
         #Check all the cases 1. lower 2. title 3.Upper 
-        if ((item.split('/')[0].title() in stop_words_list) or 
-            (item.split('/')[0].lower() in stop_words_list) or 
-            (item.split('/')[0] in stop_words_list) or
-            (item.split('/')[0].upper() in stop_words_list)):
+        if (((item.split('/')[0].title() + '\n')  in stop_words_list) or 
+            ((item.split('/')[0].lower() + '\n') in stop_words_list) or 
+            ((item.split('/')[0] + '\n') in stop_words_list) or
+            ((item.split('/')[0].upper() + '\n') in stop_words_list)):
             word_list[word_list.index(item)] = ""
     return ' '.join(word_list).strip()
 
