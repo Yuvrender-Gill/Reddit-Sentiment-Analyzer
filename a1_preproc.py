@@ -219,9 +219,16 @@ def lemmatize(comment):
     word_list = comment.split()
     
     for item in word_list:
+        new_list = item.split('/')
+        # Convert the token from the token with tag to spacy readable object
         utt = nlp(item.split('/')[0])
+        # utt is a list with one object and get the lemmatized token from it
         lemmatized_token = ' '.join([(token.lemma_) for token in utt])
-        word_list[word_list.index(item)] = lemmatized_token + '/' + item[2]
+        # replace the token text with token lemma
+        new_list[0] = lemmatized_token
+        # concatinate the modifieed string again
+        word_list[word_list.index(item)] = ''.join(new_list)
+        #concatinate the body of post and return it 
     return ' '.join(word_list).strip()
 
     
