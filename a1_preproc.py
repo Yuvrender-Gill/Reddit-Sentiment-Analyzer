@@ -6,7 +6,7 @@ import json
 import re
 from os.path import basename
 
-#import spacy
+import spacy
 #import csv
 #import itertools
 
@@ -19,10 +19,10 @@ import string
 '''GLOBAL VARIABLES'''#=====================================
 indir = '/u/cs401/A1/data/';
 
-#nlp = spacy.load('en', disable=['parser', 'ner'])
+nlp = spacy.load('en', disable=['parser', 'ner'])
 
-#stop_words_file = open('/u/cs401/Wordlists/StopWords')
-#stop_words_list = stop_words_file.readlines()
+stop_words_file = open('/u/cs401/Wordlists/StopWords')
+stop_words_list = stop_words_file.readlines()
 
 #abbrivaition_file = open('u/cs401/Wordlists/abbrev.english', 'rb')
 #abber_list = abbriviation_file.readlines()
@@ -254,7 +254,10 @@ def split_sentence(comment):
     for item in word_list:
         if ((item.strip() ==  './.') or (item.strip() ==  '?/.') 
         or (item.strip() ==  '!/.')):
-            word_list[word_list.index(item)] = item + ' \n'
+            word_list[word_list.index(item)] = item + ' \\n'
+            print(word_list[word_list.index(item + ' \\n')])
+    
+    print(' '.join(word_list))     
     return ' '.join(word_list)
 #10 lower case
 
@@ -265,6 +268,7 @@ def lower(comment):
     @param String comment: a String to lower the tokens of.
     @rtype: String
     '''
+    
     word_list = comment.split()
     for item in word_list:
         new_list = item.split('/')
@@ -284,7 +288,7 @@ def main( args ):
             
             data = json.load(open(fullFile))
             
-            for i in range(10000,10200):
+            for i in range(10198,10200):
                 line = json.loads(data[i])
                           
                 line2 = {}
