@@ -6,7 +6,7 @@ import json
 import re
 from os.path import basename
 
-import spacy
+#import spacy
 #import csv
 #import itertools
 
@@ -19,10 +19,10 @@ import string
 '''GLOBAL VARIABLES'''#=====================================
 indir = '/u/cs401/A1/data/';
 
-nlp = spacy.load('en', disable=['parser', 'ner'])
+#nlp = spacy.load('en', disable=['parser', 'ner'])
 
-stop_words_file = open('/u/cs401/Wordlists/StopWords')
-stop_words_list = stop_words_file.readlines()
+#stop_words_file = open('/u/cs401/Wordlists/StopWords')
+#stop_words_list = stop_words_file.readlines()
 
 #abbrivaition_file = open('u/cs401/Wordlists/abbrev.english', 'rb')
 #abber_list = abbriviation_file.readlines()
@@ -232,7 +232,7 @@ def lemmatize(comment):
         # utt is a list with one object and get the lemmatized token from it
         lemmatized_token = ' '.join([(token.lemma_) for token in utt])
         # replace the token text with token lemma
-        new_list[0] = lemmatized_token
+        new_list[0] = lemmatized_token+ '/'
         # concatinate the modifieed string again
         word_list[word_list.index(item)] = ''.join(new_list)
         #concatinate the body of post and return it 
@@ -255,7 +255,7 @@ def split_sentence(comment):
         if ((item.strip() ==  './.') or (item.strip() ==  '?/.') 
         or (item.strip() ==  '!/.')):
             word_list[word_list.index(item)] = item + ' \n'
-    return ' '.join(word_list).strip()
+    return ' '.join(word_list)
 #10 lower case
 
 def lower(comment):
@@ -269,7 +269,7 @@ def lower(comment):
     for item in word_list:
         new_list = item.split('/')
         lower = new_list[0].lower()
-        new_list[0] = lower
+        new_list[0] = lower+ '/'
         word_list[word_list.index(item)] = ''.join(new_list)
     return ' '.join(word_list).strip()    
     
