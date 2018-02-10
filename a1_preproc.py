@@ -116,13 +116,8 @@ def convert_HTML_char(comment):
     '''
     # Removes all the HTML tags from the comment.
     modified_comment = re.sub('<[^>]+>', '', comment)
-    #Create a parser object
-    
-    #Get all the printable strings from the comment
-    
-    modified_comment = html.unescape(modified_comment).encode('ascii', 'ignore')
-    
-    return modified_comment
+    #html.unescape returns all the html characters decoded from a string. 
+    return html.unescape(modified_comment)
 
 #3 Remove the urls from the data 
 
@@ -287,8 +282,8 @@ def main( args ):
     
             
             data = json.load(open(fullFile))
-            
-            for i in range(10198,10200):
+            args.max = args.ID % len(data) + 10000
+            for i in range(args.ID % len(data), args.max):
                 line = json.loads(data[i])
                           
                 line2 = {}
