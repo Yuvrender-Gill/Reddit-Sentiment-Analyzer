@@ -44,7 +44,7 @@ def preproc1( comment , steps=range(1,11)):
     # Noise is specifically mentioned in the below mentioned steps. 
     modComm = ''
     modComm = remove_json_special(comment)
-    #modComm = convert_HTML_char(modComm)
+    modComm = convert_HTML_char(modComm)
     modComm = remove_urls(modComm)
     modComm = pun_tokenizer(modComm)
     modComm = split_clitics(modComm)
@@ -250,9 +250,9 @@ def split_sentence(comment):
         if ((item.strip() ==  './.') or (item.strip() ==  '?/.') 
         or (item.strip() ==  '!/.')):
             word_list[word_list.index(item)] = item + ' \\n'
-            print(word_list[word_list.index(item + ' \\n')])
+            
     
-    print(' '.join(word_list))     
+         
     return ' '.join(word_list)
 #10 lower case
 
@@ -282,8 +282,9 @@ def main( args ):
     
             
             data = json.load(open(fullFile))
-            args.max = args.ID % len(data) + 10000
-            for i in range(args.ID % len(data), args.max):
+            
+            # args.max = args.ID % len(data) + 10000
+            for i in range(int(args.ID[0]) % len(data), (int(args.ID[0])% len(data)) + 10000):
                 line = json.loads(data[i])
                           
                 line2 = {}
@@ -327,7 +328,7 @@ def main( args ):
                 json_data = json.dumps(line2)  
                 allOutput.append(json_data)
                 count += 1          
-            
+                print(count)            
 
             # TODO: select appropriate args.max lines
             # TODO: read those lines with something like `j = json.loads(line)`
