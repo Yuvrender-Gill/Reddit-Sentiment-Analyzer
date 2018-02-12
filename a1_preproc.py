@@ -6,7 +6,7 @@ import json
 import re
 from os.path import basename
 
-#import spacy
+import spacy
 #import csv
 #import itertools
 
@@ -19,13 +19,13 @@ import string
 '''GLOBAL VARIABLES'''#=====================================
 indir = '/u/cs401/A1/data/';
 
-#nlp = spacy.load('en', disable=['parser', 'ner'])
+nlp = spacy.load('en', disable=['parser', 'ner'])
 
-#stop_words_file = open('/u/cs401/Wordlists/StopWords')
-#stop_words_list = stop_words_file.readlines()
+stop_words_file = open('/u/cs401/Wordlists/StopWords')
+stop_words_list = stop_words_file.readlines()
 
 abbrivaition_file = open('abbrev.english', 'r')
-abber_list = abbrivaition_file.readlines()
+abber_list = [x.replace("\n", "").lower() for x in abbrivaition_file.readlines()]
 #=================================================================
 #=================================================================
 
@@ -152,11 +152,12 @@ def pun_tokenizer(comment):
      ##            'MR.', 'Mrs.', 'Ref.', 'Rep.', 'Reps.', 'Sen.', 'fig.',
       #           'figs.', 'vs.', 'Lt.', 'e.g.', 'i.e.'] 
     abbr_list = abber_list
+    
     lst_str = comment.split()
     modified_comment = ""
     
     for item in lst_str:
-        if (not (item in abbr_list)):
+        if (not (item.lower() in abbr_list)):
             modified_comment += ' '.join([re.sub(r"((["+ '!"#$%&\()*+,-./:;<=>?@[\\]^_`{|}~' + "])\\2*)", r" \1  ", item)]) + ' '
         else:
             modified_comment += ' ' + item + ' ' 
@@ -273,7 +274,7 @@ def lower(comment):
     return ' '.join(word_list).strip()    
     
 def main( args ):
-    count = 0;
+    
     allOutput = []
     for subdir, dirs, files in os.walk(indir):
         for file in files:
@@ -328,8 +329,8 @@ def main( args ):
                 line2['cat'] = basename(fullFile)
                 json_data = json.dumps(line2)  
                 allOutput.append(json_data)
-                count += 1          
-                print(count)            
+                          
+                            
 
             # TODO: select appropriate args.max lines
             # TODO: read those lines with something like `j = json.loads(line)`
@@ -338,7 +339,7 @@ def main( args ):
             # TODO: process the body field (j['body']) with preproc1(...) using default for `steps` argument
             # TODO: replace the 'body' field with the processed text
             # TODO: append the result to 'allOutput'
-    print(count)       
+           
     fout = open(args.output, 'w')
     fout.write(json.dumps(allOutput))
     fout.close()
