@@ -282,9 +282,10 @@ def main( args ):
     
             
             data = json.load(open(fullFile))
+            start_index = args.ID[0] % len(data);
             
             # args.max = args.ID % len(data) + 10000
-            for i in range(int(args.ID[0]) % len(data), (int(args.ID[0])% len(data)) + 10000):
+            for i in range(int(start_index), int(start_index) + int(args.max)):
                 line = json.loads(data[i])
                           
                 line2 = {}
@@ -356,7 +357,7 @@ if __name__ == "__main__":
     parser.add_argument("--max", help="The maximum number of comments to read from each file", default=10000)
     args = parser.parse_args()
 
-    if (args.max > 200272):
+    if (int(args.max) > 200272):
         print("Error: If you want to read more than 200,272 comments per file, you have to read them all.")
         sys.exit(1)
         
