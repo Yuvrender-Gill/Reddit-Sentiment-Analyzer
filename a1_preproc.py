@@ -6,7 +6,7 @@ import json
 import re
 from os.path import basename
 
-import spacy
+#import spacy
 #import csv
 #import itertools
 
@@ -19,13 +19,13 @@ import string
 '''GLOBAL VARIABLES'''#=====================================
 indir = '/u/cs401/A1/data/';
 
-nlp = spacy.load('en', disable=['parser', 'ner'])
+#nlp = spacy.load('en', disable=['parser', 'ner'])
 
-stop_words_file = open('/u/cs401/Wordlists/StopWords')
-stop_words_list = stop_words_file.readlines()
+#stop_words_file = open('/u/cs401/Wordlists/StopWords')
+#stop_words_list = stop_words_file.readlines()
 
-#abbrivaition_file = open('u/cs401/Wordlists/abbrev.english', 'rb')
-#abber_list = abbriviation_file.readlines()
+abbrivaition_file = open('abbrev.english', 'r')
+abber_list = abbrivaition_file.readlines()
 #=================================================================
 #=================================================================
 
@@ -148,10 +148,10 @@ def pun_tokenizer(comment):
     @rtype: String
     '''
     
-    abbr_list = ['Capt', 'Col.', 'Dr.','Drs.', 'Fig.', 'Figs.', 'Gen.',
-                 'Gov.', 'HON.', 'Mr.', 'MRS.', 'Miss.', 'Messrs.', 'Miss.',
-                 'MR.', 'Mrs.', 'Ref.', 'Rep.', 'Reps.', 'Sen.', 'fig.',
-                 'figs.', 'vs.', 'Lt.', 'e.g.', 'i.e.'] 
+    #abbr_list = ['Capt', 'Col.', 'Dr.','Drs.', 'Fig.', 'Figs.', 'Gen.',
+     ##            'MR.', 'Mrs.', 'Ref.', 'Rep.', 'Reps.', 'Sen.', 'fig.',
+      #           'figs.', 'vs.', 'Lt.', 'e.g.', 'i.e.'] 
+    abbr_list = abber_list
     lst_str = comment.split()
     modified_comment = ""
     
