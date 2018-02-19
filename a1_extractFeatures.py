@@ -3,10 +3,15 @@ import sys
 import argparse
 import os
 import json
+import csv
+import warnings
 
-# define file names
+# define file names ==================================================
 BGL_norm_path = "/u/cs401/Wordlists/BristolNorms+GilhoolyLogie.csv"
 W_norm_path = "/u/cs401/Wordlists/Ratings_Warriner_et_al.csv"
+#======================================================================
+# Open and read csv files
+
 
 
 def extract1( comment ):
@@ -24,7 +29,15 @@ def extract1( comment ):
     text_list = get_token_text(comment)
     tag_list = get_token_tag(comment)
     sentence_list = split_sentences(comment)
-    # First 17 features==========================
+    #==================Open CSV file
+    BGL_norm_file = open(BGL_norm_path)
+    BGL_norm_reader = csv.reader(BGL_norm_file, delimiter=',')
+
+    W_norm_file = open(W_norm_path)
+    W_norm_reader = csv.reader(W_norm_file, delimiter=',')
+    # 18-23 features==========================
+    features_list1= avg_BLG(text_list, BGL_norm_reader)
+    features_list2 = feature_W(text_list, W_norm_reader)
     feats = np.array([first_person_pronouns(text_list), second_person_pronouns(text_list),
                       third_person_pronouns(text_list), coordinating_conjunctions(tag_list),
                       past_tense_verbs(tag_list), future_tense_verbs(text_list, tag_list),
@@ -32,8 +45,14 @@ def extract1( comment ):
                       ellipses(text_list), common_nouns(tag_list), proper_nouns(tag_list),
                       adverbs(tag_list), wh_words(tag_list), slang_acronyms(text_list),
                       upper_case_words(text_list), sentence_length(sentence_list, text_list),
-                      token_length(text_list), number_sentences(sentence_list)])
-    print(feats)
+                      token_length(text_list), number_sentences(sentence_list),
+                      features_list1[0], features_list1[1], features_list1[2], features_list1[3],
+                      features_list1[4], features_list1[5], features_list2[0], features_list2[1],
+                      features_list2[2], features_list2[3], features_list2[4], features_list2[5]])
+
+    BGL_norm_file.close()
+    W_norm_file.close()
+
     return feats
 
 
@@ -338,17 +357,86 @@ def number_sentences(sentences):
     return len(sentences)
 
 
-def main( args ):
+# Feature 18 - 23
+def avg_BLG(token_list, csv_reader):
+    """
+    Returns the average of the AOA norm for the words that appear in the token list.
+
+    :param token_list:
+    :param csv_reader:
+    :return:
+    """
+    count = 0
+    avg_AOA = []
+    avg_IMG = []
+    avg_FAM = []
+
+    for row in csv_reader:
+        if (count > 0):
+            if row[1] in token_list:
+                if (row[3] == ""):
+                    break
+                avg_AOA.append(float(row[3]))
+                avg_IMG.append(float(row[4]))
+                avg_FAM.append(float(row[5]))
+        count += 1
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", category=RuntimeWarning)
+        features_list = [np.mean(avg_AOA), np.mean(avg_IMG), np.mean(avg_FAM),
+                         np.std(avg_AOA), np.std(avg_IMG), np.std(avg_FAM)]
+    return features_list
+
+# Feature 18 - 23
+def feature_W(token_tag_list, csv_reader):
+    """
+    Returns the average and standard deviation of the AOA norm for the words that
+    appear in the token list.
+
+    :param token_list:
+    :param csv_reader:
+    :return:
+    """
+
+    count = 0
+    avg_VMean = []
+    avg_AMean = []
+    avg_DMean = []
+
+    for row in csv_reader:
+        if (count > 0):
+            if row[1] in token_tag_list:
+                if (row[3] == ""):
+                    break
+                avg_VMean.append(float(row[2]))
+                avg_AMean.append(float(row[5]))
+                avg_DMean.append(float(row[8]))
+        count += 1
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", category=RuntimeWarning)
+        features_list = [np.mean(avg_VMean), np.mean(avg_AMean), np.mean(avg_DMean),
+                         np.std(avg_VMean), np.std(avg_AMean), np.std(avg_DMean)]
+    return features_list
+
+def main(args):
+    """
+    Main function which calls all the functions in the library and extracts the
+    features from the input json file and stores them to a numpy array and then
+    compress the numpy array to a npz file for the program output.
+
+    :param args:
+    :return:
+
+    """
 
     data = json.load(open(args.input))
     feats = np.zeros( (len(data), 173+1))
+
     for i in range(len(data)):
         line = json.loads(data[i])
         if ("body" in line):
             new = extract1(line["body"])
             for j in range(new.size):
                 feats[i][j] = new[j]
-                print(feats[i][j])
         if ("cat" in line):
             if (line["cat"] == "Right"):
                 feats[i][173] = 2
@@ -359,7 +447,7 @@ def main( args ):
             if (line["cat"] == "Center"):
                 feats[i][173] = 1
 
-    print(feats)
+
     # TODO: your code here
 
     np.savez_compressed( args.output, feats)
