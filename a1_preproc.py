@@ -41,8 +41,7 @@ def preproc1( comment , steps=range(1,11)):
     '''
      
     # The modified comment after removing the noise from the comment. 
-    # Noise is specifically mentioned in the below mentioned steps. 
-    modComm = ''
+    # Noise is specifically mentioned in the below mentioned steps.
     modComm = remove_json_special(comment)
     modComm = convert_HTML_char(modComm)
     modComm = remove_urls(modComm)
@@ -53,39 +52,20 @@ def preproc1( comment , steps=range(1,11)):
     modComm = lemmatize(modComm)
     modComm = split_sentence(modComm)
     modComm = lower(modComm)
-    # if 2 in steps:
-       # print('TODO')
-   # if 3 in steps:
-       # print('TODO')
-   # if 4 in steps:
-       # print('TODO')
-   # if 5 in steps:
-       # print('TODO')
-   # if 6 in steps:
-      #  print('TODO')
-   # if 7 in steps:
-     #   print('TODO')
-   # if 8 in steps:
-    #    print('TODO')
-   # if 9 in steps:
-   #     print('TODO')
-   # if 10 in steps:
-  #      print('TODO')
-    
-        
+
     return modComm 
 
 
 ## Helper Functions for specific tasks
 
-#1 To remove the newline characters from the comment.
 
+# 1 To remove the newline characters from the comment.
 def remove_json_special(comment):
     ''' Returns a string with all newline characters removed from it.
     
     @param String comment: a String to remove newline character from.
     @rtype: String
-    >>> comment = "\nHel\nlo how\n \n are you?\n"
+    >>> comment = \nHel\nlo how\n \n are you?\n
     >>> remove_newline(comment)
     >>> 'Hello how are you?'
     
@@ -101,26 +81,26 @@ def remove_json_special(comment):
         
     return modified_comment
 
-#2 Convert the HTML Character to their ascii values. 
 
+# 2 Convert the HTML Character to their ascii values.
 def convert_HTML_char(comment):
     ''' Returns a string with all HTML characters replaced with their corresponding 
     ascii values.
     
     @param String comment: a String to replace HTML characters from
     @rtype: String
-    >>> comment = "\nHel\nlo how\n \n are you?\n"
+    >>> comment = \nHel\nlo how\n \n are you?\n
     >>> convert_HTML_char(comment)
     >>> 'Hello how are you?'
     
     '''
     # Removes all the HTML tags from the comment.
     modified_comment = re.sub('<[^>]+>', '', comment)
-    #html.unescape returns all the html characters decoded from a string. 
+    # html.unescape returns all the html characters decoded from a string.
     return html.unescape(modified_comment)
 
-#3 Remove the urls from the data 
 
+# 3 Remove the urls from the data
 def remove_urls(comment):
     '''
     Removes any urls that appear in a comment. URLS typpically start with 
@@ -139,8 +119,8 @@ def remove_urls(comment):
    
     return modified_comment
 
-#4 Tokenize punctuation
 
+# 4 Tokenize punctuation
 def pun_tokenizer(comment):
     '''
     Returns a string with all its punctuation tokenized.
@@ -165,8 +145,8 @@ def pun_tokenizer(comment):
     modified_comment = re.sub(r"(') ([A-Za-z] )", r"\1\2", modified_comment).strip()
     return modified_comment
 
-#5 Spliting Clitics using white space
 
+# 5 Spliting Clitics using white space
 def split_clitics(comment):
     '''
     Returns a string with clitics split from the comment.
@@ -178,8 +158,8 @@ def split_clitics(comment):
     modified_comment = re.sub(r"(') ([A-Za-z] )", r"\1\2", modified_comment).strip()
     return modified_comment
 
-#6 Part of speech tagging of tokens and lemmatization. 
 
+# 6 Part of speech tagging of tokens and lemmatization.
 def POS_tagging(comment):
     '''
     Returns with all the tokens (words) in it tagged with their part of speech.
@@ -190,8 +170,8 @@ def POS_tagging(comment):
     utt = nlp(comment)
     return ' '.join([(token.text+'/'+token.tag_) for token in utt])
 
-#7 Remove the stop words.
 
+# 7 Remove the stop words.
 def remove_stop_words(comment):
     '''
     Returns a sub-string of comment with all the stop words removed from it and
@@ -210,8 +190,8 @@ def remove_stop_words(comment):
             word_list[word_list.index(item)] = ""
     return ' '.join(word_list).strip()
 
-#8 Lemmatization of the tokens
 
+# 8 Lemmatization of the tokens
 def lemmatize(comment):
     
     '''
@@ -234,8 +214,8 @@ def lemmatize(comment):
         #concatinate the body of post and return it 
     return ' '.join(word_list).strip()
 
-#9
 
+#9
 def split_sentence(comment):
     '''
     Adds a newline character at the end of every sentence in the comment 
@@ -254,9 +234,11 @@ def split_sentence(comment):
             
     
          
-    return ' '.join(word_list)
-#10 lower case
 
+    return ' '.join(word_list)
+
+
+#10 lower case
 def lower(comment):
     ''' 
     Returns a string such that the tokens of comment are lowered. The 
@@ -272,7 +254,8 @@ def lower(comment):
         new_list[0] = lower+ '/'
         word_list[word_list.index(item)] = ''.join(new_list)
     return ' '.join(word_list).strip()    
-    
+
+
 def main( args ):
     
     allOutput = []
@@ -299,47 +282,11 @@ def main( args ):
                     line2["body"] = preproc1(line["body"])
                 else:
                     line2["body"] = "null"
-                if ('ups' in line):
-                    line2['ups'] =  line['ups']
-                else:
-                    line2['ups'] = 'null'
-                if ('downs' in line):
-                    line2['downs'] = line['downs']
-                else:
-                    line2['downs'] = 'null'
-                if ('score' in line):
-                    line2['score'] =line['score']
-                else:
-                    line2['score'] = 'null'
-                if ('controversiality' in line):
-                    line2['controversiality'] =line['controversiality']
-                else:
-                    line2['controversiality'] = 'null'
-                if ('author' in line):
-                    line2['author'] =line['author']
-                else:
-                    line2['author'] = 'null'
-                if ('subreddit' in line):
-                    line2['subreddit'] = line['subreddit']
-                else:
-                    if ('subreddit_id' in line):
-                        line2['subreddit'] = line['subreddit_id']
-                    else:
-                        line2['subreddit'] = 'null'
+
                 line2['cat'] = basename(fullFile)
                 json_data = json.dumps(line2)  
                 allOutput.append(json_data)
-                          
-                            
 
-            # TODO: select appropriate args.max lines
-            # TODO: read those lines with something like `j = json.loads(line)`
-            # TODO: choose to retain fields from those lines that are relevant to you
-            # TODO: add a field to each selected line called 'cat' with the value of 'file' (e.g., 'Alt', 'Right', ...) 
-            # TODO: process the body field (j['body']) with preproc1(...) using default for `steps` argument
-            # TODO: replace the 'body' field with the processed text
-            # TODO: append the result to 'allOutput'
-           
     fout = open(args.output, 'w')
     fout.write(json.dumps(allOutput))
     fout.close()

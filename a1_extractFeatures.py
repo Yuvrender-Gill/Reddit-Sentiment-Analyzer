@@ -7,21 +7,30 @@ import csv
 import warnings
 
 # define file names ==================================================
-BGL_norm_path = "/u/cs401/Wordlists/BristolNorms+GilhoolyLogie.csv"
-W_norm_path = "/u/cs401/Wordlists/Ratings_Warriner_et_al.csv"
-#======================================================================
+BGL_norm_path = "BristolNorms+GilhoolyLogie.csv"
+W_norm_path = "Ratings_Warriner_et_al.csv"
+right_feats_path = "/u/cs401/A1/feats/Right_IDs.txt"
+left_feats_path = "/u/cs401/A1/feats/Left_IDs.txt"
+center_feats_path = "/u/cs401/A1/feats/Center_IDs.txt"
+alt_feats_path = "/u/cs401/A1/feats/Alt_IDs.txt"
+right_array_path = "/u/cs401/A1/feats/Right_feats.dat.npy"
+left_array_path = "/u/cs401/A1/feats/Left_feats.dat.npy"
+center_array_path = "/u/cs401/A1/feats/Center_feats.dat.npy"
+alt_array_path = "/u/cs401/A1/feats/Alt_feats.dat.npy"
+
+# ======================================================================
 # Open and read csv files
 
 
-
-def extract1( comment ):
+def extract1(comment):
     ''' This function extracts features from a single comment
 
     Parameters:
         comment : string, the body of a comment (after preprocessing)
 
     Returns:
-        feats : numpy Array, a 173-length vector of floating point features (only the first 29 are expected to be filled, here)
+        feats : numpy Array, a 173-length vector of floating point features (only the first 29 are expected
+        to be filled, here)
     '''
     # Create a feature vector
     feats = np.zeros(174)
@@ -29,15 +38,17 @@ def extract1( comment ):
     text_list = get_token_text(comment)
     tag_list = get_token_tag(comment)
     sentence_list = split_sentences(comment)
-    #==================Open CSV file
+    # Open CSV file
+
     BGL_norm_file = open(BGL_norm_path)
     BGL_norm_reader = csv.reader(BGL_norm_file, delimiter=',')
 
     W_norm_file = open(W_norm_path)
     W_norm_reader = csv.reader(W_norm_file, delimiter=',')
     # 18-23 features==========================
-    features_list1= avg_BLG(text_list, BGL_norm_reader)
+    features_list1 = avg_BLG(text_list, BGL_norm_reader)
     features_list2 = feature_W(text_list, W_norm_reader)
+    # Call the helpers to get features 1-29 in an array
     feats = np.array([first_person_pronouns(text_list), second_person_pronouns(text_list),
                       third_person_pronouns(text_list), coordinating_conjunctions(tag_list),
                       past_tense_verbs(tag_list), future_tense_verbs(text_list, tag_list),
@@ -56,7 +67,7 @@ def extract1( comment ):
     return feats
 
 
-#========================HELPER FUNCTIONS================================================
+# ========================HELPER FUNCTIONS================================================
 
 
 def get_token_text(comment):
@@ -332,6 +343,8 @@ def sentence_length(sentences, token_list):
     :param token_list:
     :return:
     """
+    if len(sentences) == 0:
+        return 0
     return len(token_list) / float(len(sentences))
 
 
@@ -344,6 +357,8 @@ def token_length(token_list):
     """
     punctuation_list = ['#', '$', '.', ',', ':', '(', ')', '"', 'POS']
     token_lengths = [len(x) for x in token_list if x not in punctuation_list]
+    if len(token_lengths) == 0:
+        return 0
     return sum(token_lengths) / float(len(token_lengths))
 
 
@@ -386,7 +401,8 @@ def avg_BLG(token_list, csv_reader):
                          np.std(avg_AOA), np.std(avg_IMG), np.std(avg_FAM)]
     return features_list
 
-# Feature 18 - 23
+
+# Feature 24 - 29
 def feature_W(token_tag_list, csv_reader):
     """
     Returns the average and standard deviation of the AOA norm for the words that
@@ -417,6 +433,22 @@ def feature_W(token_tag_list, csv_reader):
                          np.std(avg_VMean), np.std(avg_AMean), np.std(avg_DMean)]
     return features_list
 
+
+# Feature 30 -173
+def LISP_features(npy_path, txt_path):
+    """
+
+    :param npy_path:
+    :param txt_path:
+    :return:
+    """
+
+    array = np.load(npy_path)
+    file = open(txt_path, "r")
+
+
+
+
 def main(args):
     """
     Main function which calls all the functions in the library and extracts the
@@ -427,39 +459,65 @@ def main(args):
     :return:
 
     """
-
+    # Open and store id files
+    right_ids = open(right_feats_path).readlines()
+    left_ids = open(left_feats_path).readlines()
+    center_ids = open(center_feats_path).readlines()
+    alt_ids = open(alt_feats_path).readlines()
+    # open feat arrays
+    right_array = np.load(right_array_path)
+    left_array = np.load(left_array_path)
+    center_array = np.load(center_array_path)
+    alt_array = np.load(alt_array_path)
+    check = 0
     data = json.load(open(args.input))
-    feats = np.zeros( (len(data), 173+1))
-
+    feats = np.zeros((len(data), 173 + 1))
+    # Features 1-29
     for i in range(len(data)):
         line = json.loads(data[i])
-        if ("body" in line):
+        if "id" in line:
+            if "cat" in line:
+                if line["cat"] == "Right":
+                    id_index = right_ids.index(line["id"]+"\n")
+                    features_array = right_array[id_index]
+                    for j in range(features_array.size):
+                        feats[i][j + 29] = features_array[j]
+                if line["cat"] == "Left":
+                    id_index = left_ids.index(line["id"] + "\n")
+                    features_array = left_array[id_index]
+                    for j in range(features_array.size):
+                        feats[i][j + 29] = features_array[j]
+                if line["cat"] == "Alt":
+                    id_index = alt_ids.index(line["id"] + "\n")
+                    features_array = alt_array[id_index]
+                    for j in range(features_array.size):
+                        feats[i][j + 29] = features_array[j]
+                if line["cat"] == "Center":
+                    id_index = center_ids.index(line["id"] + "\n")
+                    features_array = center_array[id_index]
+                    for j in range(features_array.size):
+                        feats[i][j + 29] = features_array[j]
+        if "body" in line:
             new = extract1(line["body"])
             for j in range(new.size):
                 feats[i][j] = new[j]
-        if ("cat" in line):
-            if (line["cat"] == "Right"):
+        if "cat" in line:
+            if line["cat"] == "Right":
                 feats[i][173] = 2
-            if (line["cat"] == "Left"):
+            if line["cat"] == "Left":
                 feats[i][173] = 0
-            if (line["cat"] == "Alt"):
+            if line["cat"] == "Alt":
                 feats[i][173] = 3
-            if (line["cat"] == "Center"):
+            if line["cat"] == "Center":
                 feats[i][173] = 1
 
-
-    # TODO: your code here
-
-    np.savez_compressed( args.output, feats)
+    np.savez_compressed(args.output, F=feats)
 
 
-if __name__ == "__main__": 
-
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Process each .')
     parser.add_argument("-o", "--output", help="Directs the output to a filename of your choice", required=True)
     parser.add_argument("-i", "--input", help="The input JSON file, preprocessed as in Task 1", required=True)
     args = parser.parse_args()
-                 
 
     main(args)
-
